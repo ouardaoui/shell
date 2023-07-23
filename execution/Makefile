@@ -6,7 +6,7 @@
 #    By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/10 12:45:20 by mlagrini          #+#    #+#              #
-#    Updated: 2023/07/22 21:39:32 by aouardao         ###   ########.fr        #
+#    Updated: 2023/07/23 21:24:11 by aouardao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,17 @@ SRC		=	minishell_main.c builtin_commands/ms_env.c builtin_commands/ms_pwd.c \
 			../parse/parse.c ../parse/utiles.c pipes_exec/ms_execute_utiles.c \
 			pipes_exec/ms_execute_pipes.c ../parse/handle_quote.c \
 			../parse/re_shap.c ../parse/redirection.c ../parse/tools.c \
-			builtin_commands/ms_env_fork.c pipes_exec/ms_absolute_cmd.c
+			builtin_commands/ms_env_fork.c pipes_exec/ms_absolute_cmd.c \
+			../parse/is_pipe.c \
+			../parse/create_list.c \
+			../parse/ft_red_handle.c \
+			../parse/ft_expand.c \
+			../parse/ft_redirection.c \
+			../parse/ft_utile_quote.c
 OBJ		=	${SRC:.c=.o}
 NAME	=	minishell
 CC		=	cc -g
-FLAGS	=	-Wall -Wextra -Werror -fsanitize=address -g
+FLAGS	=	-Wall -Wextra -Werror  -fsanitize=address -g
 RL		=	-lreadline -L /Users/mlagrini/.brew/opt/readline/lib
 LIBFT	=	42_libft/libft.a
 RM		=	rm -rf

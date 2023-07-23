@@ -6,7 +6,7 @@
 /*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:08:20 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/22 21:38:57 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/23 19:43:42 by aouardao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	execute_command(t_env **env, char **args, int fd_in, int fd_out)
 	if (fd_in > 2)
 		dup2(fd_in, STDIN_FILENO);
 	if (fd_out > 2)
-		dup2(fd_out, STDOUT_FILENO);
+		dup2(fd_out, STDOUT_FILENO);	
 	if (execve(path, args, environ) < 0)
 	{
 		free_split(paths);

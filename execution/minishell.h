@@ -6,7 +6,7 @@
 /*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:46:10 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/22 21:48:16 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/23 23:51:03 by aouardao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,10 @@ void	sort_env(t_env **env);
 char	*is_path_valid(char *path);
 
 int fd_redirection(t_cmd **cmd_line, t_env *export);
+int	expand(t_cmd **cmd_line, t_env *export, int rslt);
+int ft_handle_fd(t_w_token *node, t_cmd *cmd, t_env *export);
+char *ft_herdoc(t_w_token *node,t_cmd *cmd, t_env *export);
+char *ft_loopfct(t_w_token *word, int *end , char *str, t_env *export);
+char *ft_loopfct_double(t_w_token *word, int *end , char *str, t_env *export);
+
 #endif
