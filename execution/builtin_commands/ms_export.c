@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:50:02 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/21 11:06:20 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/25 13:25:39 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,8 @@ int	check_and_update(t_env **env, t_env **export, char *args)
 {
 	char	**split;
 
-	if (args[1] != '_' && !ft_isalpha(args[0]))
-	{
-		ft_putstr_fd("export: '", 2);
-		ft_putstr_fd(args, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
+	if (check_valid_export(args, "export"))
 		return (2);
-	}
 	if (ft_strchr(args, '='))
 	{
 		split = equal_split(args);
@@ -104,17 +99,17 @@ int	execute_export(t_env **env, t_env **export, char **args, int fd)
 	while (args[++i])
 	{
 		if (check_and_update(env, export, args[i]) == 2)
-			g_exit_status = 1000;
+			g_var.exit_status = 1000;
 		else if (check_and_update(env, export, args[i]) == 1)
 			continue ;
 		else
 			add_export_var(env, export, args[i]);
 	}
-	if (args[1] && g_exit_status == 1000)
-		return (g_exit_status = 1);
+	if (args[1] && g_var.exit_status == 1000)
+		return (g_var.exit_status = 1);
 	else if (args[1])
-		return (g_exit_status = 0);
+		return (g_var.exit_status = 0);
 	sort_env(export);
 	print_export_list(export, fd);
-	return (g_exit_status = 0);
+	return (g_var.exit_status = 0);
 }

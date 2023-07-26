@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:53:57 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/21 19:58:41 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/24 20:12:20 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	is_path_env(t_env **env, char ***paths, char *arg)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		return (g_exit_status = 127);
+		return (g_var.exit_status = 127);
 	}
 	return (0);
 }
@@ -80,7 +80,7 @@ int	does_path_exist(char **path, char **paths_arr, char **args)
 		ft_putstr_fd(args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free_split(paths_arr);
-		return (g_exit_status = 127);
+		return (g_var.exit_status = 127);
 	}
 	return (0);
 }

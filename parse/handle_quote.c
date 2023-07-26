@@ -6,7 +6,7 @@
 /*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 23:56:39 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/24 00:08:43 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:19:24 by aouardao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ char	*ft_loopfct_double(t_w_token *word, int *e, char *s, t_env *ex)
 	while (word->string[*e] && word->string[*e] != '"')
 	{
 		s = ft_chunk_double(word, &st, e, s);
-		if (!s)
-			return (NULL);
 		if (word->string[*e] == '$')
 		{
-			s = ft_chunk_two(word, &st, e, s);
-			if (word->string[*e] > '0' && word->string[*e] < '9' && ++(*e)
-				&& st++)
+			ft_chunk_two(word, &st, e);
+			if (word->string[*e] == '?' && ++(*e))
+				s = dunder(s);
+			else if (word->string[*e] >= '0' && word->string[*e] <= '9'
+				&& ++(*e) && st++)
 				s = ft_join_dollar(s, word->string + st, *e - st, ex);
 			else
 			{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 19:05:04 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/23 20:21:00 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/24 22:08:19 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_fd_out(t_w_token *node, t_cmd *cmd)
 	{
 		if (cmd->fd_out > 2)
 			close(cmd->fd_out);
-		cmd->fd_out = open(node->string, O_CREAT | O_RDWR, 0644);
+		cmd->fd_out = open(node->string, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (cmd->fd_out == -1)
 			return (1);
 	}
@@ -38,7 +38,8 @@ int	ft_file(char *s, int fd)
 	int	f;
 
 	f = -1;
-	close(fd);
+	if (fd > 2)
+		close(fd);
 	f = open(s, O_RDONLY);
 	if (s)
 	{
@@ -65,10 +66,13 @@ int	ft_handle_fd(t_w_token *node, t_cmd *cmd, t_env *export)
 	}
 	if (node->token == DELIMITER)
 	{
+		her_signals();
 		if (cmd->fd > 2)
 			close(cmd->fd);
 		s = ft_herdoc(node, cmd, export);
 		cmd->fd = ft_file(s, cmd->fd);
+		if (g_var.her == 1)
+			return (2);
 		if (cmd->fd == -1)
 			return (-1);
 	}

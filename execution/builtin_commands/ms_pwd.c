@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 13:21:41 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/21 11:10:43 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:14:32 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ int	execute_pwd(char **args, int fd)
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": invalid option\n", 2);
 		free (curr_pwd);
-		return (g_exit_status = 1);
+		return (g_var.exit_status = 1);
 	}
 	if (curr_pwd)
 	{
 		ft_putstr_fd(curr_pwd, fd);
 		ft_putstr_fd("\n", fd);
 		free (curr_pwd);
-		return (g_exit_status = 0);
+		return (g_var.exit_status = 0);
 	}
 	perror("pwd");
 	free (curr_pwd);
-	return (g_exit_status = 1);
+	return (g_var.exit_status = 1);
 }

@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 16:45:06 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/21 11:10:13 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/23 18:43:25 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ void	free_cmd(t_cmd **head)
 		}
 		if ((*head)->word)
 			ft_free_word(&(*head)->word);
+		if ((*head)->fd > 2)
+			close((*head)->fd);
+		if ((*head)->fd_out > 2)
+			close ((*head)->fd_out);
 		free(*head);
 		*head = tmp;
 	}

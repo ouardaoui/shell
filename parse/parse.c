@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 22:16:01 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/23 18:45:13 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/24 20:17:13 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	parse(t_cmd **cmd_line, char *str, t_env *export)
 		write(2, "bash: syntax error \n", ft_strlen("bash: syntax error '\n"));
 		return (1);
 	}
-	if (red_update(cmd_line) || expand(cmd_line, export, 0)
-		|| re_shap(cmd_line))
+	if (red_update(cmd_line) || expand(cmd_line, export, 0) || re_shap(cmd_line)
+		|| red_handle(cmd_line, str, 0))
 		return (1);
 	ft_handle_shap(cmd_line);
 	if (fd_redirection(cmd_line, export))

@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 14:35:09 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/18 18:52:38 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/25 13:26:47 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ int	execute_unset(t_env **env, t_env **export, char **args)
 	i = 1;
 	while (args[i])
 	{
+		if (check_valid_export(args[i], "unset"))
+		{
+			i++;
+			continue ;
+		}
 		if (find_env_var(env, args[i]))
 		{
 			delete_env_var(export, args[i]);

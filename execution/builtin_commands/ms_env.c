@@ -6,23 +6,23 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:50:06 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/21 11:04:34 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:14:32 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	env_errors(int errno, char *arg)
+int	env_errors(int errnb, char *arg)
 {
-	if (errno == 1)
+	if (errnb == 1)
 	{
 		ft_putstr_fd("env: illegal option\n", 2);
-		return (g_exit_status = 1);
+		return (g_var.exit_status = 1);
 	}
 	ft_putstr_fd("env: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(" No such file or directory\n", 2);
-	return (g_exit_status = 127);
+	return (g_var.exit_status = 127);
 }
 
 int	execute_env(t_env *env, char **args, int fd)
@@ -47,7 +47,7 @@ int	execute_env(t_env *env, char **args, int fd)
 		}
 		curr = curr->next;
 	}
-	return (g_exit_status = 0);
+	return (g_var.exit_status = 0);
 }
 
 void	create_envnode(t_env **head, char *name, char *var, char *env_var)

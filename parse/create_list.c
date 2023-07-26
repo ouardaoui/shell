@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:43:02 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/23 17:58:09 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:00:36 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_create_list_cmd(char *str, t_cmd **cmd_line)
 			return (1);
 		node->string = string;
 		node->fd = 0;
-		node->fd_out = 1;
+		node->fd_out = -2;
 		if (str[end] == '|')
 			end++;
 		start = end;

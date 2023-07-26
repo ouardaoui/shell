@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execute_pipes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 17:08:20 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/23 19:43:42 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:46:05 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,54 @@ int	execute_command(t_env **env, char **args, int fd_in, int fd_out)
 	paths = NULL;
 	path = NULL;
 	environ = env_to_arr(env);
-	if ( args && args[0] && (args[0][0] == '/' || args[0][0] == '.'))
+	if (args && args[0] && (args[0][0] == '/' || args[0][0] == '.'))
 		path = is_path_valid(args[0]);
 	else
 	{
 		if (is_path_env(env, &paths, args[0]))
-			exit(g_exit_status = 127);
+			exit(g_var.exit_status = 127);
 		if (does_path_exist(&path, paths, args))
-			exit(g_exit_status = 127);
+			exit(g_var.exit_status = 127);
 	}
 	if (fd_in > 2)
 		dup2(fd_in, STDIN_FILENO);
 	if (fd_out > 2)
-		dup2(fd_out, STDOUT_FILENO);	
+		dup2(fd_out, STDOUT_FILENO);
 	if (execve(path, args, environ) < 0)
+		print_command_error(path, strerror(errno));
+	return (g_var.exit_status = 0);
+}
+
+void	child_job(t_cmd *cmd, int *fd, t_env **env, t_env **export)
+{
+	char	**args;
+
+	cmd_signals();
+	args = args_array(&cmd);
+	if (cmd->next)
+		dup2(fd[1], STDOUT_FILENO);
+	close (fd[0]);
+	close (fd[1]);
+	if (cmd->word->token == BUILTIN)
+		execute_builtins(env, &cmd, export);
+	else
 	{
-		free_split(paths);
-		free(path);
+		if (!args[0][0])
+			exit(g_var.exit_status);
+		execute_command(env, args, cmd->fd, cmd->fd_out);
 	}
-	return (g_exit_status = 0);
+	free_split(args);
+	exit(g_var.exit_status);
+}
+
+void	parent_job(pid_t id, int *fd_holder, int *fd)
+{
+	shell_signals();
+	close (fd[1]);
+	if (*fd_holder)
+		close (*fd_holder);
+	*fd_holder = fd[0];
+	waitpid(id, &g_var.exit_status, 0);
 }
 
 int	exec_pipes(t_env **env, t_cmd **cmd, t_env **export)
@@ -75,41 +104,25 @@ int	exec_pipes(t_env **env, t_cmd **cmd, t_env **export)
 	int		fd[2];
 	pid_t	id;
 	int		fd_holder;
-	char	**args;
 
 	fd_holder = 0;
 	temp = *cmd;
-	args = NULL;
 	while (temp)
 	{
 		pipe(fd);
 		id = fork();
+		if (id < 0)
+			break ;
 		if (id == 0)
 		{
-			args = args_array(&temp);
 			dup2(fd_holder, STDIN_FILENO);
-			if (temp->next)
-				dup2(fd[1], STDOUT_FILENO);
-			close(fd[0]);
-			close(fd[1]);
-			if (temp->word->token == BUILTIN)
-				execute_builtins(env, &temp, export);
-			else
-				execute_command(env, args, temp->fd, temp->fd_out);
-			free(args);
-			exit(0);
+			child_job(temp, fd, env, export);
 		}
 		else
-		{
-			close(fd[1]);
-			if (fd_holder)
-				close(fd_holder);
-			fd_holder = fd[0];
-			waitpid(id, &g_exit_status, 0);
-		}
+			parent_job(id, &fd_holder, fd);
 		temp = temp->next;
 	}
 	close (fd[0]);
 	close (fd[1]);
-	return (g_exit_status = WEXITSTATUS(g_exit_status));
+	return (g_var.exit_status = WEXITSTATUS(g_var.exit_status));
 }

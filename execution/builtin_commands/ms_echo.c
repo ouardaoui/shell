@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:04:17 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/19 21:55:24 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:14:32 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ int	execute_echo(char **args, int fd)
 	}
 	if (flag == 0)
 		ft_putstr_fd("\n", fd);
-	return (g_exit_status = 0);
+	return (g_var.exit_status = 0);
 }

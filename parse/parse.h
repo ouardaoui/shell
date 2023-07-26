@@ -6,7 +6,7 @@
 /*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 21:17:40 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/24 00:11:27 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:10:59 by aouardao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ int						ft_mini_expand(t_w_token *word, int *start, int *end,
 							char *str);
 char					*ft_chunk(t_w_token *word, int *start, int *end,
 							char *str);
-char					*ft_chunk_two(t_w_token *word, int *start, int *end,
-							char *str);
+void					ft_chunk_two(t_w_token *word, int *start, int *end);
 int						ft_check(t_w_token *word, char *str, int i);
 int						is_alph_num(char c);
 char					*ft_chunk_double(t_w_token *word, int *start, int *end,
 							char *str);
+char					*dunder(char *s);
 
 #endif

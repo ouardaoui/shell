@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouardao <aouardao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 02:39:00 by aouardao          #+#    #+#             */
-/*   Updated: 2023/07/23 20:20:46 by aouardao         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:15:19 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_write(char *str, int fd, t_env *export)
 	{
 		if (str[i] == '$' && str[i + 1] == '?')
 		{
-			s = ft_itoa(g_exit_status);
+			s = ft_itoa(g_var.exit_status);
 			write(fd, s, ft_strlen(s));
 			free(s);
 			i += 2;
@@ -76,7 +76,8 @@ char	*generate(void)
 	name = (char *)malloc(sizeof(char) * (11));
 	fd = open("/dev/random", O_RDONLY);
 	bytes = read(fd, name, 10);
-	close(fd);
+	if (fd > 2)
+		close(fd);
 	while (i < 10)
 	{
 		x = name[i] % 26;
@@ -103,9 +104,7 @@ char	*ft_herdoc(t_w_token *node, t_cmd *cmd, t_env *export)
 	while (1)
 	{
 		str = readline(">");
-		if (!str)
-			return (NULL);
-		if (!strcmp(node->string, str))
+		if (!str || !strcmp(node->string, str))
 		{
 			free(str);
 			break ;
@@ -114,6 +113,8 @@ char	*ft_herdoc(t_w_token *node, t_cmd *cmd, t_env *export)
 		write(cmd->fd, "\n", 1);
 		free(str);
 	}
+	if (g_var.her == 1)
+		open("/dev/tty", O_RDONLY);
 	return (s);
 }
 

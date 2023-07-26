@@ -6,7 +6,7 @@
 /*   By: mlagrini <mlagrini@1337.student.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 13:33:37 by mlagrini          #+#    #+#             */
-/*   Updated: 2023/07/18 18:51:15 by mlagrini         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:16:45 by mlagrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,18 @@ int	execute_cd(t_env **env, t_env **export, char **args)
 	if (args[1])
 	{
 		if (!ft_strncmp(args[1], "-", 2) && prev_dir(env, curr_pwd))
-			return (g_exit_status = 1);
+			return (g_var.exit_status = 1);
 		else if (ft_strncmp(args[1], "-", 2))
 		{
 			if (chdir(args[1]))
-				return (free(curr_pwd), perror("minishell"), g_exit_status = 1);
+				return (free(curr_pwd), perror("minishell"), \
+				g_var.exit_status = 1);
 		}
 		update_wd(env, curr_pwd);
 		update_wd(export, curr_pwd);
 		free (curr_pwd);
-		return (g_exit_status = 0);
+		return (g_var.exit_status = 0);
 	}
-	g_exit_status = execute_home_cd(env, export, curr_pwd);
-	return (free(curr_pwd), g_exit_status);
+	g_var.exit_status = execute_home_cd(env, export, curr_pwd);
+	return (free(curr_pwd), g_var.exit_status);
 }
